@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
 
-public class TicketManagerTest {
+public class  TicketManagerTest {
 
     @Test
     public void testSortTickets() {
@@ -60,4 +60,50 @@ public class TicketManagerTest {
         Assertions.assertArrayEquals(expected, actual);
     }
 
+    @Test
+    public void shouldProperlyFindTicketWhenItExist() {
+        AviaSouls manager = new AviaSouls();
+        Ticket ticket1 = new Ticket ("MSK", "UFA", 200, 10, 12);
+        Ticket ticket2 = new Ticket ("MSK", "MSQ", 400, 7, 7);
+        Ticket ticket3 = new Ticket ("UFA", "SPB", 800, 4, 9);
+        manager.add(ticket1);
+        manager.add(ticket2);
+        manager.add(ticket3);
+
+        Ticket[] expected = { ticket3 };
+        Ticket[] actual = manager.search("UFA", "SPB");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldProperlyFindMultipleTicketsWhenTheyExist() {
+        AviaSouls manager = new AviaSouls();
+        Ticket ticket1 = new Ticket ("MSK", "UFA", 200, 10, 12);
+        Ticket ticket2 = new Ticket ("UFA", "SPB", 400, 7, 7);
+        Ticket ticket3 = new Ticket ("UFA", "SPB", 800, 4, 9);
+        manager.add(ticket1);
+        manager.add(ticket2);
+        manager.add(ticket3);
+
+        Ticket[] expected = { ticket2, ticket3 };
+        Ticket[] actual = manager.search("UFA", "SPB");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldReturnEmptyArrayWhenNoTicketsFound() {
+        AviaSouls manager = new AviaSouls();
+        Ticket ticket1 = new Ticket ("MSK", "UFA", 200, 10, 12);
+        Ticket ticket2 = new Ticket ("UFA", "SPB", 400, 7, 7);
+        Ticket ticket3 = new Ticket ("UFA", "SPB", 800, 4, 9);
+        manager.add(ticket1);
+        manager.add(ticket2);
+        manager.add(ticket3);
+
+        Ticket[] actual = manager.search("MSQ", "UFA");
+
+        Assertions.assertEquals(0, actual.length);
+    }
 }
